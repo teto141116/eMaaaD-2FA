@@ -29,14 +29,23 @@ jobs:
         run: |
           rm -rf project
           mkdir project
-          unzip -q eMaD2FA_GitHub.zip -d project
+          unzip -q eMaD2FA_GitHub_FIXED.zip -d project
+
+      - name: Check extracted project
+        working-directory: project
+        run: |
+          echo "Project files:"
+          ls -la
+          echo "App directory:"
+          ls -la app
 
       - name: Build APK
         working-directory: project
-        run: gradle assembleDebug
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: eMaD-2FA
           path: project/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
